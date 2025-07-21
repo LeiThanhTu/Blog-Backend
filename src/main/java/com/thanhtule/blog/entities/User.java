@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class User {
     @Id  //  primary key
-    @GeneratedValue(strategy = GenerationType.AUTO)  // auto: default, jpa tu chon
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // auto: default, jpa tu chon
     private int id;
 
     @Column(name="user_name", nullable=false, length=100)
