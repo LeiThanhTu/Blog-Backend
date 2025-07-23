@@ -2,6 +2,7 @@ package com.thanhtule.blog.services;
 
 import com.thanhtule.blog.entities.Post;
 import com.thanhtule.blog.payloads.PostDto;
+import com.thanhtule.blog.payloads.PostResponse;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface PostService {
     void deletePost(Integer postId);
 
     // get all posts
-    List<PostDto> getAllPost();
+    PostResponse getAllPost(Integer pageNumber, Integer pageSize);
 
     // get single post
     PostDto getPostById(Integer postId);

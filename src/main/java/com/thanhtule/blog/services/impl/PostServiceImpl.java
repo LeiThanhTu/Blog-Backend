@@ -4,6 +4,7 @@ import com.thanhtule.blog.entities.Post;
 import com.thanhtule.blog.entities.User;
 import com.thanhtule.blog.exceptions.ResourceNotFoundException;
 import com.thanhtule.blog.payloads.PostDto;
+import com.thanhtule.blog.payloads.PostResponse;
 import com.thanhtule.blog.repositories.CategoryRepo;
 import com.thanhtule.blog.repositories.PostRepo;
 import com.thanhtule.blog.repositories.UserRepo;
@@ -11,6 +12,9 @@ import com.thanhtule.blog.services.PostService;
 import com.thanhtule.blog.entities.Category;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -72,11 +76,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPost() {
-        List<Post> allPosts = this.postRepo.findAll();
+    public PostResponse getAllPost(Integer pageNumber, Integer pageSize) {
+        Pageable p = PageRequest.of(pageNumber, pageSize);
+        Page<Post> pagePost = this.postRepo.findAll(p);
+        List<Post> allPosts = pagePost.getContent();
+
         List<PostDto> postDtos = allPosts.stream().map((post)->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
 
-        return postDtos;
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(postDtos);
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElements((int) pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+        return postResponse;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.thanhtule.blog.controllers;
 import com.thanhtule.blog.entities.Post;
 import com.thanhtule.blog.payloads.ApiResponse;
 import com.thanhtule.blog.payloads.PostDto;
+import com.thanhtule.blog.payloads.PostResponse;
 import com.thanhtule.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,9 +50,12 @@ public class PostController {
 
     // get all posts
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getAllPost(){
-        List<PostDto> posts = this.postService.getAllPost();
-        return new ResponseEntity<List<PostDto>>(posts, HttpStatus.OK);
+    public ResponseEntity<PostResponse> getAllPost(
+            @RequestParam(value="pageNumber", defaultValue="1", required = false) Integer pageNumber,
+            @RequestParam(value="pageSize", defaultValue = "5", required = false) Integer pageSize
+    ){
+        PostResponse postResponse = this.postService.getAllPost(pageNumber, pageSize);
+        return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
     }
 
     // get post details by id
