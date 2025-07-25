@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionHandle {
+public class GlobalExceptionHandler {
 
     // handle request user id not found - handling exception
     @ExceptionHandler(ResourceNotFoundException.class)
