@@ -83,19 +83,13 @@ public class AuthController {
 
     }
 
-    // register new user api
+     //register new user api
 
 //    @PostMapping("/register")
 //    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto) {
 //        UserDto registeredUser = this.userService.registerNewUser(userDto);
 //        return new ResponseEntity<UserDto>(registeredUser, HttpStatus.CREATED);
 //    }
-//
-//    // get loggedin user data
-//    @Autowired
-//    private UserRepo userRepo;
-//    @Autowired
-//    private ModelMapper mapper;
 //
 //    @GetMapping("/current-user/")
 //    public ResponseEntity<UserDto> getUser(Principal principal) {
