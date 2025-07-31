@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -29,5 +32,7 @@ public class UserDto {
 
     @NotEmpty
     private String about;
+
+    private Set<RoleDto> roles = new HashSet<>();
 
 }

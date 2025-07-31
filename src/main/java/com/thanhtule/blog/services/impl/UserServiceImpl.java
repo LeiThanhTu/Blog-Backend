@@ -1,18 +1,23 @@
 package com.thanhtule.blog.services.impl;
 
+import com.thanhtule.blog.config.AppConstants;
+import com.thanhtule.blog.entities.Role;
 import com.thanhtule.blog.entities.User;
 import com.thanhtule.blog.exceptions.ResourceNotFoundException;
 import com.thanhtule.blog.payloads.UserDto;
+import com.thanhtule.blog.repositories.RoleRepo;
 import com.thanhtule.blog.repositories.UserRepo;
 import com.thanhtule.blog.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.thanhtule.blog.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +28,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepo roleRepo;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -82,8 +93,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-   public UserDto userToDto (User user){
-        UserDto userDto = this.modelMapper.map(user, UserDto.class);
+   public UserDto userToDto (User user) {
+       UserDto userDto = this.modelMapper.map(user, UserDto.class);
 
 //        UserDto userDto = new UserDto();
 //        userDto.setId(user.getId());
@@ -91,7 +102,22 @@ public class UserServiceImpl implements UserService {
 //        userDto.setEmail(user.getEmail());
 //        userDto.setAbout(user.getAbout());
 //        userDto.setPassword(user.getPassword());
-        return userDto;
+       return userDto;
+   }
+       @Override
+       public UserDto registerNewUser(UserDto userDto) {
+           User user = this.modelMapper.map(userDto, User.class);
+           user.setId(null);
+           // encoded the password
+           user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+           // roles
+           Role role = this.roleRepo.findById(AppConstants.NORMAL_USER).get();
 
+           user.getRoles().add(role);
+
+           User newUser = this.userRepo.save(user);
+
+           return this.modelMapper.map(newUser, UserDto.class);
+       }
     }
-}
+

@@ -85,12 +85,12 @@ public class AuthController {
 
      //register new user api
 
-//    @PostMapping("/register")
-//    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto) {
-//        UserDto registeredUser = this.userService.registerNewUser(userDto);
-//        return new ResponseEntity<UserDto>(registeredUser, HttpStatus.CREATED);
-//    }
-//
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto) {
+        UserDto registeredUser = this.userService.registerNewUser(userDto);
+        return new ResponseEntity<UserDto>(registeredUser, HttpStatus.CREATED);
+    }
+
 //    @GetMapping("/current-user/")
 //    public ResponseEntity<UserDto> getUser(Principal principal) {
 //        User user = this.userRepo.findByEmail(principal.getName()).get();
